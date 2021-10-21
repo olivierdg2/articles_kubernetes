@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etcd-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: etcd
+  template:
+    metadata:
+      labels:
+        run: etcd
+    spec:
+      containers:
+      - name: db
+        image: bitnami/etcd
+        env: 
+        - name: ALLOW_NONE_AUTHENTICATION
+          value: "yes"
+        - name: ETCD_ADVERTISE_CLIENT_URLS
+          value: "http://10.1.0.27:2379"
+        - name: DATA_DIR
+          value: "etcd-data"
+        ports:
+          - containerPort: 2379
